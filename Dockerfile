@@ -33,4 +33,5 @@ RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}
 
 USER claude
 WORKDIR /project
-CMD ["claude"]
+ENTRYPOINT ["claude"]
+CMD []

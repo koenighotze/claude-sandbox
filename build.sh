@@ -1,4 +1,4 @@
 #!/bin/bash
 set -euo pipefail
 
-docker buildx build -t "koenighotze/claude-sandbox:dev" .
+docker buildx build --platform linux/amd64 -t "koenighotze/claude-sandbox:dev" .
