@@ -10,6 +10,8 @@ if [[ "${1:-}" == "--" ]]; then
 fi
 
 CONTAINER_NAME="claude-sandbox"
+CLAUDE_HOME="${PROJECT_DIR}/claude_home"
+mkdir -p "${CLAUDE_HOME}"
 
 if docker ps -q --filter "name=^${CONTAINER_NAME}$" | grep -q .; then
   echo "Attaching to running container '${CONTAINER_NAME}'..."
@@ -20,5 +22,6 @@ else
   docker run -it --name "${CONTAINER_NAME}" \
     --cap-add NET_ADMIN \
     -v "${PROJECT_DIR}:/project:rw" \
+    -v "${CLAUDE_HOME}:/home/claude:rw" \
     koenighotze/claude-sandbox:dev "$@"
 fi
