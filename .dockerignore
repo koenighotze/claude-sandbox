@@ -1,2 +1,37 @@
+# Version control
 .git
+.gitignore
+
+# Documentation
 *.md
+LICENSE
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Editor/IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Logs and temp files
+*.log
+tmp/
+temp/
+
+# Secrets and credentials
+.env
+.env.*
+*.pem
+*.key
+*.cert
+
+# Node
+node_modules/
+npm-debug.log*
+
+# CI/CD
+.github/
+.gitlab-ci.yml
