@@ -23,14 +23,19 @@ else
   # Forward common API keys and tokens if set in the host environment
   ENV_ARGS=()
   for var in ANTHROPIC_API_KEY GITHUB_TOKEN GH_TOKEN OPENAI_API_KEY; do
-    [[ -n "${!var:-}" ]] && ENV_ARGS+=(-e "${var}=${!var}")
+    [[ -n "${!var:-}" ]] && ENV_ARGS+=(-e "${var}")
   done
+
+  # SYS_PTRACE and seccomp=unconfined weaken isolation; opt in explicitly
+  UNSAFE_ARGS=()
+  if [[ "${ENABLE_UNSAFE_CAPS:-}" == "1" ]]; then
+    UNSAFE_ARGS+=(--cap-add SYS_PTRACE --security-opt seccomp=unconfined)
+  fi
 
   docker run -it --name "${CONTAINER_NAME}" \
     --init \
     --cap-add NET_ADMIN \
-    --cap-add SYS_PTRACE \
-    --security-opt seccomp=unconfined \
+    "${UNSAFE_ARGS[@]}" \
     --shm-size=256m \
     "${ENV_ARGS[@]}" \
     -v "${PROJECT_DIR}:/project:rw" \
