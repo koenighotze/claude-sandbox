@@ -9,6 +9,7 @@ mkdir -p "${CLAUDE_HOME}"
 
 docker run \
   -it \
+  --rm \
   --shm-size=256m \
   --cap-add NET_ADMIN \
   -v "${PROJECT_DIR}:/project:rw" \

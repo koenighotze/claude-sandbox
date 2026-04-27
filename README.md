@@ -31,7 +31,7 @@ This drops you into an interactive Claude Code session with your project availab
 
 ## What's included
 
-The sandbox image includes: `git`, `gh`, `jq`, `fzf`, `vim`, `nano`, `zsh`, `curl`, and network tools (`iptables`, `ipset`, `iproute2`).
+The sandbox image includes standard tools (`git`, `gh`, `jq`, `fzf`, `vim`, `nano`, `zsh`, `curl`, network tools) plus these additional CLI utilities:
 
   ┌───────────┬────────────────────────────────────────┐
   │   Tool    │                  Why                   │

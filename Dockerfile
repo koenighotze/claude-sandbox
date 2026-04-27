@@ -1,4 +1,4 @@
-# Pin UV_VERSION at build time: docker buildx build --build-arg UV_VERSION=0.6.14 .
+# Pin UV_VERSION at build time: docker build --build-arg UV_VERSION=0.6.14 .
 ARG UV_VERSION=latest
 FROM ghcr.io/astral-sh/uv:${UV_VERSION} AS uv-installer
 
