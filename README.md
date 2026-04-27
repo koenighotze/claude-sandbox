@@ -33,29 +33,18 @@ This drops you into an interactive Claude Code session with your project availab
 
 The sandbox image includes standard tools (`git`, `gh`, `jq`, `fzf`, `vim`, `nano`, `zsh`, `curl`, network tools) plus these additional CLI utilities:
 
-  ┌───────────┬────────────────────────────────────────┐
-  │   Tool    │                  Why                   │
-  ├───────────┼────────────────────────────────────────┤
-  │ lazygit   │ TUI for git, useful inside the sandbox │
-  ├───────────┼────────────────────────────────────────┤
-  │ delta     │ Syntax-highlighted git diffs           │
-  ├───────────┼────────────────────────────────────────┤
-  │ eza       │ Modern ls replacement                  │
-  ├───────────┼────────────────────────────────────────┤
-  │ xh        │ Better httpie-style HTTP client        │
-  ├───────────┼────────────────────────────────────────┤
-  │ just      │ Command runner (like make but sane)    │
-  ├───────────┼────────────────────────────────────────┤
-  │ watchexec │ Re-run commands on file change         │
-  ├───────────┼────────────────────────────────────────┤
-  │ hyperfine │ CLI benchmarking                       │
-  ├───────────┼────────────────────────────────────────┤
-  │ sd        │ sed replacement, cleaner syntax        │
-  ├───────────┼────────────────────────────────────────┤
-  │ dust      │ Disk usage visualiser                  │
-  ├───────────┼────────────────────────────────────────┤
-  │ procs     │ Better ps                              │
-  └───────────┴────────────────────────────────────────┘
+| Tool      | Why                                    |
+|-----------|----------------------------------------|
+| lazygit   | TUI for git, useful inside the sandbox |
+| delta     | Syntax-highlighted git diffs           |
+| eza       | Modern ls replacement                  |
+| xh        | Better httpie-style HTTP client        |
+| just      | Command runner (like make but sane)    |
+| watchexec | Re-run commands on file change         |
+| hyperfine | CLI benchmarking                       |
+| sd        | sed replacement, cleaner syntax        |
+| dust      | Disk usage visualiser                  |
+| procs     | Better ps                              |
 
 Claude Code runs as a non-root user (`claude`, uid 1001).
 

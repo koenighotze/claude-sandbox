@@ -7,7 +7,7 @@ ARG TARGETARCH
 ARG DEBIAN_FRONTEND=noninteractive
 
 # ── Tool version manifest ──────────────────────────────────────────────────
-# Override any tool: docker buildx build --build-arg LAZYGIT_VERSION=0.62.0 .
+# Override any tool: docker build --build-arg LAZYGIT_VERSION=0.62.0 .
 ARG LAZYGIT_VERSION=0.61.1
 ARG DELTA_VERSION=0.19.2
 ARG EZA_VERSION=0.23.4
