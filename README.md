@@ -1,5 +1,8 @@
 # claude-sandbox
 
+[![CI](https://github.com/koenighotze/claude-sandbox/actions/workflows/ci.yml/badge.svg)](https://github.com/koenighotze/claude-sandbox/actions/workflows/ci.yml)
+[![Publish](https://github.com/koenighotze/claude-sandbox/actions/workflows/publish.yml/badge.svg)](https://github.com/koenighotze/claude-sandbox/actions/workflows/publish.yml)
+
 A Docker-based sandbox for running [Claude Code](https://claude.ai/code) in an isolated environment.
 
 ## Prerequisites
