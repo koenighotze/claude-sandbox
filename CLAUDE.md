@@ -12,7 +12,7 @@ This repository provides a Docker-based sandbox for running Claude Code in an is
 ```bash
 ./build.sh
 ```
-Builds the image tagged as `koenighotze/claude-sandbox:dev`.
+Builds the image tagged as `claude-sandbox:dev`.
 
 **Run the sandbox:**
 ```bash
@@ -23,7 +23,7 @@ Mounts `project-dir` (defaults to `$PWD`) into the container at `/project` and l
 ## Architecture
 
 - `Dockerfile` — Based on `node:25-slim`. Creates a non-root user `claude` (uid 1001), installs system tools (git, gh, jq, vim, zsh, iptables/ipset for network control, etc.), installs `@anthropic-ai/claude-code` globally via npm, and sets `/project` as the working directory.
-- `build.sh` — Thin wrapper around `docker buildx build`.
+- `build.sh` — Thin wrapper around `docker build`.
 - `run.sh` — Runs the container interactively with a bind mount of the target project. Accepts an optional path argument; defaults to `$PWD`.
 
 The `CLAUDE_CODE_VERSION` build arg controls which version of `@anthropic-ai/claude-code` is installed (defaults to `latest`).
