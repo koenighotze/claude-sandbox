@@ -107,7 +107,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openssh-client \
     procps \
     ripgrep \
-    sudo \
     tmux \
     tree \
     unzip \
