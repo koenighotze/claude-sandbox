@@ -126,10 +126,13 @@ COPY --from=uv-installer /uv /usr/local/bin/uv
 RUN UV_TOOL_BIN_DIR=/usr/local/bin uv tool install semgrep
 RUN echo 'eval "$(direnv hook bash)"' >> /etc/bash.bashrc
 
+COPY sandbox-claude.md /etc/claude-defaults/CLAUDE.md
+ENV CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=/etc/claude-defaults
+
 RUN useradd --uid 1001 --create-home --shell /bin/bash claude
 RUN mkdir -p /project && chown claude:claude /project
 
-RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}
+RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION} @aisuite/chub
 RUN git config --system core.pager "delta" && \
 git config --system interactive.diffFilter "delta --color-only" && \
 git config --system delta.navigate true && \
