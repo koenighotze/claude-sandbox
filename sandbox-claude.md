@@ -4,7 +4,7 @@ You are running inside a Docker-based Claude Code sandbox.
 
 ## Project
 
-The mounted project lives at `/project`. All file operations should target this directory.
+The mounted project lives at `/ext/project`. All file operations should target this directory.
 
 ## Available tools
 

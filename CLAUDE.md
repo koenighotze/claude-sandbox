@@ -18,11 +18,11 @@ Builds the image tagged as `claude-sandbox:dev`.
 ```bash
 ./run.sh [project-dir]
 ```
-Mounts `project-dir` (defaults to `$PWD`) into the container at `/project` and launches Claude Code interactively. The container is named `claude-sandbox`.
+Mounts `project-dir` (defaults to `$PWD`) into the container at `/ext/project` and launches Claude Code interactively. The container is named `claude-sandbox`.
 
 ## Architecture
 
-- `Dockerfile` — Based on `node:25-slim`. Creates a non-root user `claude` (uid 1001), installs system tools (git, gh, jq, vim, zsh, iptables/ipset for network control, etc.), installs `@anthropic-ai/claude-code` globally via npm, and sets `/project` as the working directory.
+- `Dockerfile` — Based on `node:25-slim`. Creates a non-root user `claude` (uid 1001), installs system tools (git, gh, jq, vim, zsh, iptables/ipset for network control, etc.), installs `@anthropic-ai/claude-code` globally via npm, and sets `/ext/project` as the working directory.
 - `build.sh` — Thin wrapper around `docker build`.
 - `run.sh` — Runs the container interactively with a bind mount of the target project. Accepts an optional path argument; defaults to `$PWD`.
 
