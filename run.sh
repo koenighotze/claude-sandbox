@@ -12,7 +12,7 @@ docker run \
   --rm \
   --shm-size=256m \
   --cap-add NET_ADMIN \
-  -v "${PROJECT_DIR}:/project:rw" \
+  -v "${PROJECT_DIR}:/ext/project:rw" \
   -v "${CLAUDE_HOME}:/home/claude:rw" \
   --name claude-sandbox \
   "claude-sandbox:dev" \

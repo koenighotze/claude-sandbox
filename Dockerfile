@@ -79,9 +79,10 @@ RUN PROCS_ARCH=$([ "$TARGETARCH" = "amd64" ] && echo "x86_64-linux" || echo "aar
 # Make everything executable
 RUN chmod +x /staging/bin/*
 
-FROM node:25-slim
+FROM node:22-slim
 ARG DEBIAN_FRONTEND=noninteractive
 ARG CLAUDE_CODE_VERSION=latest
+ARG CHUB_VERSION=0.1.4
 ENV COLORTERM=truecolor
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -127,20 +128,30 @@ RUN UV_TOOL_BIN_DIR=/usr/local/bin uv tool install semgrep
 RUN echo 'eval "$(direnv hook bash)"' >> /etc/bash.bashrc
 
 RUN useradd --uid 1001 --create-home --shell /bin/bash claude
-RUN mkdir -p /project && chown claude:claude /project
-
-RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}
-RUN git config --system core.pager "delta" && \
-git config --system interactive.diffFilter "delta --color-only" && \
-git config --system delta.navigate true && \
-git config --system delta.side-by-side true && \
-git config --system merge.conflictstyle zdiff3
+RUN mkdir -p /ext/project && chown claude:claude /ext /ext/project
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 USER claude
-WORKDIR /project
+RUN git config --global core.pager "delta" && \
+    git config --global interactive.diffFilter "delta --color-only" && \
+    git config --global delta.navigate true && \
+    git config --global delta.side-by-side true && \
+    git config --global merge.conflictstyle zdiff3
+
+COPY sandbox-claude.md /ext/CLAUDE.md
+COPY statusline.sh /etc/claude-defaults/statusline.sh
+COPY sandbox-settings.json /etc/claude-defaults/settings.json
+
+ENV NPM_CONFIG_PREFIX=/home/claude/.npm-global
+ENV PATH=/home/claude/.npm-global/bin:$PATH
+RUN npm install -g \
+    @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION} \
+    @aisuite/chub@${CHUB_VERSION}
+
+WORKDIR /ext/project
 
 # Interactive sandbox — no daemon to health-check
 HEALTHCHECK NONE
 
-ENTRYPOINT ["claude", "--enable-auto-mode"]
-CMD []
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

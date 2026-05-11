@@ -4,6 +4,7 @@
 
 # Documentation
 *.md
+!sandbox-claude.md
 LICENSE
 
 # OS artifacts
