@@ -30,7 +30,7 @@ If no path is provided, the current directory is mounted:
 ./run.sh
 ```
 
-This drops you into an interactive Claude Code session with your project available at `/project` inside the container.
+This drops you into an interactive Claude Code session with your project available at `/ext/project` inside the container.
 
 ## What's included
 
