@@ -127,6 +127,9 @@ RUN UV_TOOL_BIN_DIR=/usr/local/bin uv tool install semgrep
 RUN echo 'eval "$(direnv hook bash)"' >> /etc/bash.bashrc
 
 COPY sandbox-claude.md /ext/CLAUDE.md
+COPY sandbox-settings.json /etc/claude-defaults/settings.json
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 RUN useradd --uid 1001 --create-home --shell /bin/bash claude
 RUN mkdir -p /ext/project && chown claude:claude /ext /ext/project
@@ -144,5 +147,5 @@ WORKDIR /ext/project
 # Interactive sandbox — no daemon to health-check
 HEALTHCHECK NONE
 
-ENTRYPOINT ["claude", "--enable-auto-mode"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD []
