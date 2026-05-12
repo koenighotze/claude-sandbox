@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: shellcheck
-        run: shellcheck *.sh
+        run: find . -name "*.sh" -exec shellcheck {} +
 
   checkov:
     name: Checkov — Dockerfile security scan
@@ -22,11 +22,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Install checkov
-        run: pip install "checkov==3.2.520" --quiet
-
       - name: Run checkov
-        run: checkov -f Dockerfile --quiet
+        run: pipx run checkov -f Dockerfile --quiet
 
   build:
     name: Build image
