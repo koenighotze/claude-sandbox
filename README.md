@@ -37,8 +37,10 @@ A `claude_home/` directory is created inside the project directory and mounted a
 **Remove a running or stopped container:**
 
 ```bash
-./rm.sh
+./rm.sh [project-dir]
 ```
+
+Defaults to the current directory, matching `run.sh`'s naming scheme.
 
 ## What's included
 

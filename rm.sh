@@ -1,7 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-CONTAINER_NAME="claude-sandbox"
+PROJECT_DIR="$(realpath "${1:-$PWD}")"
+PROJECT_NAME="$(basename "$PROJECT_DIR")"
+CONTAINER_NAME="claude-sandbox-${PROJECT_NAME}"
 
 if docker ps -aq --filter "name=^${CONTAINER_NAME}$" | grep -q .; then
   docker rm -f "${CONTAINER_NAME}"
