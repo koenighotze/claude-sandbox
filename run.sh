@@ -12,8 +12,8 @@ CLAUDE_CONFIG="${SANDBOX_BASE}/${PROJECT_NAME}"
 CLAUDE_AUTH="${SANDBOX_BASE}/.claude.json"
 
 mkdir -p "${CLAUDE_CONFIG}"
-# touch ensures the host path is a file before Docker bind-mounts it
-touch "${CLAUDE_AUTH}"
+# Seed with empty JSON so Docker bind-mounts a valid file, not an empty one
+[ -s "${CLAUDE_AUTH}" ] || echo '{}' > "${CLAUDE_AUTH}"
 
 CONTAINER_NAME="claude-sandbox-${PROJECT_NAME}"
 
