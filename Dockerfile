@@ -1,13 +1,10 @@
-# Pin UV_VERSION at build time: docker build --build-arg UV_VERSION=0.6.14 .
-ARG UV_VERSION=latest
-FROM ghcr.io/astral-sh/uv:${UV_VERSION} AS uv-installer
-
 FROM ubuntu:24.04 AS builder
 ARG TARGETARCH
 ARG DEBIAN_FRONTEND=noninteractive
 
 # ── Tool version manifest ──────────────────────────────────────────────────
 # Override any tool: docker build --build-arg LAZYGIT_VERSION=0.62.0 .
+ARG UV_VERSION=0.6.14
 ARG LAZYGIT_VERSION=0.61.1
 ARG DELTA_VERSION=0.19.2
 ARG EZA_VERSION=0.23.4
@@ -76,18 +73,23 @@ RUN PROCS_ARCH=$([ "$TARGETARCH" = "amd64" ] && echo "x86_64-linux" || echo "aar
     curl -fsSL "https://github.com/dalance/procs/releases/download/v${PROCS_VERSION}/procs-v${PROCS_VERSION}-${PROCS_ARCH}.zip" \
     -o /tmp/procs.zip && unzip -o /tmp/procs.zip -d . && rm /tmp/procs.zip
 
+# uv
+RUN UV_ARCH=$([ "$TARGETARCH" = "amd64" ] && echo "x86_64-unknown-linux-musl" || echo "aarch64-unknown-linux-musl") && \
+    curl -fsSL "https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/uv-${UV_ARCH}.tar.gz" \
+    | tar xz --strip-components=1 --wildcards '*/uv'
+
 # Make everything executable
 RUN chmod +x /staging/bin/*
 
 FROM node:22-slim
 ARG DEBIAN_FRONTEND=noninteractive
-ARG CLAUDE_CODE_VERSION=latest
+ARG CLAUDE_CODE_VERSION=2.1.139
 ARG CHUB_VERSION=0.1.4
 ENV COLORTERM=truecolor
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    aggregate \
     bat \
+    buildah \
     ca-certificates \
     curl \
     direnv \
@@ -103,32 +105,38 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     iptables \
     jq \
     less \
-    man-db \
     nano \
     openssh-client \
     procps \
     ripgrep \
     tmux \
     tree \
+    uidmap \
     unzip \
     vim \
     wget \
     zsh \
     # Python (for semgrep + general use)
     python3 \
-    python3-pip \
     python3-venv \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN ln -sf /usr/bin/fdfind /usr/local/bin/fd && \
     ln -sf /usr/bin/batcat /usr/local/bin/bat
 COPY --from=builder /staging/bin/ /usr/local/bin/
-COPY --from=uv-installer /uv /usr/local/bin/uv
 RUN UV_TOOL_BIN_DIR=/usr/local/bin uv tool install semgrep
 RUN echo 'eval "$(direnv hook bash)"' >> /etc/bash.bashrc
 
 RUN useradd --uid 1001 --create-home --shell /bin/bash claude
 RUN mkdir -p /ext/project && chown claude:claude /ext /ext/project
+
+# Allow claude to use user namespaces for rootless buildah
+RUN echo "claude:100000:65536" >> /etc/subuid && \
+    echo "claude:100000:65536" >> /etc/subgid
+
+# Seed buildah config: vfs storage (no overlay/fuse needed), rootless isolation
+RUN mkdir -p /etc/claude-defaults/containers && \
+    printf '[storage]\ndriver = "vfs"\n' > /etc/claude-defaults/containers/storage.conf
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
