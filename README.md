@@ -32,7 +32,7 @@ If no path is provided, the current directory is mounted:
 
 This drops you into an interactive Claude Code session with your project available at `/ext/project` inside the container.
 
-A `claude_home/` directory is created inside the project directory and mounted as the Claude user's home. This persists Claude Code settings, chat history, and skills across container runs.
+Per-project Claude Code state (settings, chat history, skills) is persisted to `~/.claude-sandbox/<project-name>/` on the host and mounted into the container at `~/.claude`. Authentication (`.claude.json`) is shared across projects via `~/.claude-sandbox/.claude.json`, so you only log in once. Override the base directory with `CLAUDE_SANDBOX_HOME`.
 
 **Remove a running or stopped container:**
 
