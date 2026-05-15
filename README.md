@@ -12,7 +12,19 @@ A Docker-based sandbox for running [Claude Code](https://claude.ai/code) in an i
 
 ## Usage
 
-**Build the image:**
+**Pull a pre-built image** (no build required):
+
+```bash
+# GitHub Container Registry (recommended — no anonymous pull rate limit)
+docker pull ghcr.io/koenighotze/claude-sandbox:latest
+
+# Docker Hub (mirror — anonymous pulls are rate-limited to 100 / 6h per IP)
+docker pull koenighotze/claude-sandbox:latest
+```
+
+Available tags: `latest` (tip of `main`) and the short commit SHA (e.g. `a8768e5`) for pinning.
+
+**Build the image yourself:**
 
 ```bash
 ./build.sh
